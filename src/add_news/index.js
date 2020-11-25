@@ -23,6 +23,7 @@ const AddNews = ({ route, navigation }) => {
     const [title, setTitle] = useState();
     const [textNews, setTextNews] = useState();
     const [selectedAuthor, setSelectedAuthor] = useState();
+    const [created, setCreated] = useState();
     const [keyBoardIsOpen, setKeyBoardIsOpen] = useState(false);
     const { 
         addNews,
@@ -49,6 +50,7 @@ const AddNews = ({ route, navigation }) => {
           setTitle(item.title);
           setTextNews(item.text);
           setSelectedAuthor(item.author_id);
+          setCreated(item.created || new Date());
         }
     }, [item && op == 'edit' && item.id]);
 
@@ -63,7 +65,7 @@ const AddNews = ({ route, navigation }) => {
     const saveNews = ()=>{
         if(title && textNews && selectedAuthor){
           if(op == 'new'){
-            if(addNews({id: uuidv4(), author_id: selectedAuthor, title: title, text: textNews})){
+            if(addNews({id: uuidv4(), author_id: selectedAuthor, title: title, text: textNews, created: new Date()})){
               setTitle('');
               setTextNews('');
               setSelectedAuthor(null);
@@ -72,7 +74,7 @@ const AddNews = ({ route, navigation }) => {
               Alert.alert('Erro', 'Ocorreu algum erro ao salvar');
             }
           }else if(op == 'edit'){
-            if(editNews({id: item.id, author_id: selectedAuthor, title: title, text: textNews})){
+            if(editNews({id: item.id, author_id: selectedAuthor, title: title, text: textNews, created:created, updated: new Date()})){
               setTitle('');
               setTextNews('');
               setSelectedAuthor(null);
@@ -146,7 +148,8 @@ const styles = StyleSheet.create({
       display: 'flex',
       flex: 1,
       backgroundColor: '#fff',
-      marginTop: 100
+      marginTop: 20,
+      marginBottom: 55
     },
     buttonSave: {
         height: 55,

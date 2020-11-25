@@ -91,6 +91,59 @@ const NewsProvider = ({ children }) => {
         });
     }
 
+    const searchNews = (value) => {
+        let searchArray = news;
+        let val = value;
+    
+        var results = [];
+        if (val && val.trim() !== "") {
+          val = val.toUpperCase();
+          val = stripVowelAccent(val);
+    
+          for (var index = 0; index < searchArray.length; ++index) {
+            var entry = searchArray[index];
+            if (
+              entry &&
+              entry.title &&
+              stripVowelAccent(entry.title)
+                .toUpperCase()
+                .indexOf(val) !== -1
+            ) {
+              results.push(entry);
+            }
+          }
+          if (results) {
+            setNews(results);
+          }
+        }
+    
+        if (!val) {
+          getNews();
+        }
+      }
+    
+      const stripVowelAccent = (str) => {
+        var rExps = [
+          { re: /[\xC0-\xC6]/g, ch: "A" },
+          { re: /[\xE0-\xE6]/g, ch: "a" },
+          { re: /[\xC8-\xCB]/g, ch: "E" },
+          { re: /[\xE8-\xEB]/g, ch: "e" },
+          { re: /[\xCC-\xCF]/g, ch: "I" },
+          { re: /[\xEC-\xEF]/g, ch: "i" },
+          { re: /[\xD2-\xD6]/g, ch: "O" },
+          { re: /[\xF2-\xF6]/g, ch: "o" },
+          { re: /[\xD9-\xDC]/g, ch: "U" },
+          { re: /[\xF9-\xFC]/g, ch: "u" },
+          { re: /[\xD1]/g, ch: "N" },
+          { re: /[\xF1]/g, ch: "n" },
+        ];
+    
+        for (var i = 0, len = rExps.length; i < len; i++)
+          str = str.replace(rExps[i].re, rExps[i].ch);
+    
+        return str;
+      }
+
     return (
         <NewsContext.Provider
           value={{
@@ -102,7 +155,8 @@ const NewsProvider = ({ children }) => {
             uuidv4,
             getAuthorsName,
             editNews,
-            deleteNews
+            deleteNews,
+            searchNews
           }}
         >
           {children}

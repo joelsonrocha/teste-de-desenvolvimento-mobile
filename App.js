@@ -25,7 +25,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import NewsProvider from "./contexts/newsContext"; 
 import Home from "./src/home";
 import AddNews from "./src/add_news";
-import Author from "./src/author";
+import NewsDetail from "./src/news_detail";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -34,9 +34,9 @@ const App = () => {
     <NewsProvider>
       <NavigationContainer>
           <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen name="Home" component={Home} options={{ title: 'News' }}/>
-            <Stack.Screen name="AddNews" component={AddNews} options={{ title: 'AddNews' }}/>
-            <Stack.Screen name="Author" component={Author} options={{ title: 'Author' }}/>
+            <Stack.Screen name="Home" component={Home} options={{ title: 'Notícias' }}/>
+            <Stack.Screen name="AddNews" component={AddNews} options={({ route }) => ({ title: route.params.name })}/>
+            <Stack.Screen name="NewsDetail" component={NewsDetail} options={({ route }) => ({ title: route.params.name })}/>
           </Stack.Navigator> 
         {/* <Tab.Navigator>
             <Tab.Screen name="Home" component={Home} />

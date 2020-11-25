@@ -11,15 +11,21 @@ import {
     FlatList,
     TouchableOpacity
   } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { SearchBar } from 'react-native-elements';
+import { color } from 'react-native-reanimated';
+import NewsDetail from '../news_detail';
 
 const Home = ({ navigation }) => {
     const { 
         getNews,
         news,
         getAuthorsName,
-        deleteNews
+        deleteNews,
+        searchNews
     } = useContext(NewsContext);
     const [selectedId, setSelectedId] = useState(null);
+    const [searchNewsValue, setSearchNewsValue] = useState(null);
     /* useEffect(() => {
        console.log('news', news);
     }, []); */
@@ -34,18 +40,18 @@ const Home = ({ navigation }) => {
 
     const editNews = (item) =>{
         console.log('item para editar', item);
-        navigation.navigate('AddNews', { op: 'edit', item: item });
+        navigation.navigate('AddNews', { op: 'edit', item: item, name: 'Editar notícia' });
     }
     
 
     const Item = ({ item, onPress }) => (
     <View onPress={onPress} style={styles.itemNews}>
-        <Text style={styles.itemTitle}>{item.title}</Text>
-        <Text style={styles.itemText}>{item.text}</Text>
-        <Text style={styles.itemAuthor}>Autor: {getAuthorsName(item.author_id)[0].name}</Text>
+        <Text style={styles.itemTitle} onPress={() => detail(item)}>{item.title}</Text>
+        <Text style={styles.itemAuthor}>by: {getAuthorsName(item.author_id)[0].name}</Text>
+        <Text style={styles.itemText} onPress={() => detail(item)}>{item.text.length > 200 ? item.text.substring(0, 200)+'...' : item.text}</Text>
         <View style={styles.itemBtnArea}>
-        <TouchableOpacity onPress={() => editNews(item)} style={styles.itemNewsBtnEdit}><Text style={styles.itemNewsBtnEditText}>Editar</Text></TouchableOpacity>
-        <TouchableOpacity onPress={() => deleteNews(item)} style={styles.itemNewsBtnDel}><Text style={styles.itemNewsBtnDelText}>Apaga</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => editNews(item)} style={styles.itemNewsBtnEdit}><Text style={styles.itemNewsBtnEditText}><Icon name="edit" size={20} color="#666" /></Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => deleteNews(item)} style={styles.itemNewsBtnDel}><Text style={styles.itemNewsBtnDelText}><Icon name="close" size={20} color="#666" /></Text></TouchableOpacity>
         </View>
     </View>
     );
@@ -64,14 +70,27 @@ const Home = ({ navigation }) => {
     };
 
     const addNews = () =>{
-        navigation.navigate('AddNews', { op: 'new', item: null });
+        navigation.navigate('AddNews', { op: 'new', item: null, name: 'Adicionar nova notícia' });
+    }
+
+    const updateSearchNews = (value) =>{
+        console.log(value)
+        searchNews(value);
     }
     
+    const detail = (item) =>{
+        navigation.navigate('NewsDetail', { item: item, name: item.title });
+    }
+
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.homeToolbar}>
-                <Text style={styles.pageTitle}>Lista de notícias</Text>
-            </View>
+            <SearchBar
+                placeholder="Busque pelo título..."
+                onChangeText={(value) => updateSearchNews(value)}
+                value={searchNewsValue}
+                inputStyle={styles.searchBar}
+                lightTheme={true}
+            />
             <FlatList
                 data={news}
                 renderItem={renderItem}
@@ -82,7 +101,7 @@ const Home = ({ navigation }) => {
                 style={styles.buttonAddNews}
                 onPress={()=>addNews()}
             >
-                <Text style={styles.buttonAddNewsText}>+</Text>
+                <Text style={styles.buttonAddNewsText}><Icon name="plus" size={30} color="#666" /></Text>
             </TouchableOpacity>
         </SafeAreaView>
     );
@@ -91,23 +110,13 @@ const Home = ({ navigation }) => {
 export default Home;
 
 const styles = StyleSheet.create({
-    homeToolbar: {
-        display: 'flex',
-        height: 50,
+    searchBar:{
         backgroundColor: '#fff',
-        marginTop: 10,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    pageTitle:{
-        fontSize: 18,
-        fontWeight: "bold"
+        color: '#000'
     },
     container: {
       backgroundColor: '#fff',
       marginTop: 10,
-      borderColor: 'green',
-      borderWidth: 1,
       flex: 1,
       display: "flex"
     },
@@ -125,23 +134,21 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     itemTitle:{
-        fontSize: 18,
+        fontSize: 15,
         fontWeight: "bold",
         textAlign: "center",
-        marginTop: 20
+        marginTop: 20,
+    },
+    itemAuthor:{
+        textAlign: "center",
+        fontSize: 8,
+        fontWeight: "bold",
+        marginTop: 1,
     },
     itemText:{
         textAlign: "justify",
-        fontSize: 15,
-        marginLeft: 20,
-        marginTop: 20
-    },
-    itemAuthor:{
-        textAlign: "right",
-        fontSize: 12,
-        fontWeight: "bold",
-        marginRight: 15,
-        marginTop: 20
+        fontSize: 13,
+        margin: 20
     },
     buttonAddNews:{
         width: 60,  
@@ -165,18 +172,14 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "flex-start"
+        justifyContent: "flex-end",
+        marginRight: 10
     },
     itemNewsBtnEdit:{
-        marginLeft: 20
-    },
-    itemNewsBtnEditText:{
-
+        
     },
     itemNewsBtnDel:{
-        marginLeft: 20
+        marginLeft: 10,
+        marginRight: 10
     },
-    itemNewsBtnDelText:{
-        
-    }
 });
