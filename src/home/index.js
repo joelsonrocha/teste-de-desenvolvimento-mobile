@@ -16,7 +16,8 @@ const Home = ({ navigation }) => {
     const { 
         getNews,
         news,
-        getAuthorsName
+        getAuthorsName,
+        deleteNews
     } = useContext(NewsContext);
     const [selectedId, setSelectedId] = useState(null);
     /* useEffect(() => {
@@ -35,6 +36,7 @@ const Home = ({ navigation }) => {
         console.log('item para editar', item);
         navigation.navigate('AddNews', { op: 'edit', item: item });
     }
+    
 
     const Item = ({ item, onPress }) => (
     <View onPress={onPress} style={styles.itemNews}>
@@ -43,7 +45,7 @@ const Home = ({ navigation }) => {
         <Text style={styles.itemAuthor}>Autor: {getAuthorsName(item.author_id)[0].name}</Text>
         <View style={styles.itemBtnArea}>
         <TouchableOpacity onPress={() => editNews(item)} style={styles.itemNewsBtnEdit}><Text style={styles.itemNewsBtnEditText}>Editar</Text></TouchableOpacity>
-        <TouchableOpacity onPress={onPress} style={styles.itemNewsBtnDel}><Text style={styles.itemNewsBtnDelText}>Apaga</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => deleteNews(item)} style={styles.itemNewsBtnDel}><Text style={styles.itemNewsBtnDelText}>Apaga</Text></TouchableOpacity>
         </View>
     </View>
     );

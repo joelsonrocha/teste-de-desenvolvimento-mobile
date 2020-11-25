@@ -27,12 +27,11 @@ const NewsProvider = ({ children }) => {
         }
     }
 
-    editNews = async(new_news) =>{
-        console.log('editNews get object index', getNewsIndexById(new_news.id));
-        let array = news;
-        array[getNewsIndexById(new_news.id)] = new_news;
+    editNews = async(edit_news) =>{
         try {
-            if(new_news){
+            if(edit_news){
+                let array = news;
+                array[getNewsIndexById(edit_news.id)] = edit_news;
                 await AsyncStorage.setItem('news', JSON.stringify(array));
                 getNews();
                 return true;
@@ -42,6 +41,23 @@ const NewsProvider = ({ children }) => {
             console.log('Erro addNews', e);
             return false;
         }
+    }
+
+    deleteNews = async(delete_news) =>{
+        let array = news;
+        array.splice(getNewsIndexById(delete_news.id), 1);
+        try {
+            if(delete_news){
+                let array = news;
+                await AsyncStorage.setItem('news', JSON.stringify(array));
+                getNews();
+                return true;
+            }
+        } catch (e) {
+            // saving error
+            console.log('Erro addNews', e);
+            return false;
+        } 
     }
 
     getNews = async() =>{
@@ -85,7 +101,8 @@ const NewsProvider = ({ children }) => {
             author,
             uuidv4,
             getAuthorsName,
-            editNews
+            editNews,
+            deleteNews
           }}
         >
           {children}

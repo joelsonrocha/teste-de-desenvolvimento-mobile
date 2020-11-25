@@ -45,12 +45,12 @@ const AddNews = ({ route, navigation }) => {
     }, []);
 
     useEffect(() => {
-        if(item.id){
+        if(item && op == 'edit' && item.id){
           setTitle(item.title);
           setTextNews(item.text);
           setSelectedAuthor(item.author_id);
         }
-    }, [op == 'edit' && item.id]);
+    }, [item && op == 'edit' && item.id]);
 
     const _keyboardWillShow = () => {
         setKeyBoardIsOpen(true);
