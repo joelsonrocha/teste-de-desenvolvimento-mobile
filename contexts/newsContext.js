@@ -3,9 +3,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const NewsContext = createContext();
 
 const NewsProvider = ({ children }) => {
-    const [teste, setTeste] = useState("Olá Mundo");
-    const [storedNumber, setStoredNumber] = useState('');
-    const [needsRestart, setNeedsRestart] = useState(false);
     const [news, setNews] = useState([]);
     const [author, setAuthor] = useState([
         {id: 1, name: 'João'},
@@ -21,7 +18,6 @@ const NewsProvider = ({ children }) => {
                 return true;
             }
         } catch (e) {
-            // saving error
             console.log('Erro addNews', e);
             return false;
         }
@@ -37,8 +33,7 @@ const NewsProvider = ({ children }) => {
                 return true;
             }
         } catch (e) {
-            // saving error
-            console.log('Erro addNews', e);
+            console.log('Erro editNews', e);
             return false;
         }
     }
@@ -54,8 +49,7 @@ const NewsProvider = ({ children }) => {
                 return true;
             }
         } catch (e) {
-            // saving error
-            console.log('Erro addNews', e);
+            console.log('Erro deleteNews', e);
             return false;
         } 
     }
@@ -147,7 +141,6 @@ const NewsProvider = ({ children }) => {
     return (
         <NewsContext.Provider
           value={{
-            teste,
             addNews,
             getNews,
             news,

@@ -6,7 +6,6 @@ import {
     ScrollView,
     View,
     Text,
-    StatusBar,
   } from 'react-native';
 import moment from 'moment';
 

@@ -1,21 +1,16 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { NewsContext } from "../../contexts/newsContext";
 import {
-    SafeAreaView,
     StyleSheet,
-    ScrollView,
     View,
-    Image,
     TextInput,
     Text,
-    StatusBar,
     KeyboardAvoidingView,
     TouchableWithoutFeedback,
     Keyboard,
     TouchableOpacity,
     Alert
   } from 'react-native';
-/* import {Picker} from '@react-native-picker/picker'; */
 import RNPickerSelect from 'react-native-picker-select';
 
 const AddNews = ({ route, navigation }) => {
@@ -29,7 +24,6 @@ const AddNews = ({ route, navigation }) => {
         addNews,
         author,
         uuidv4,
-        getNews,
         editNews
     } = useContext(NewsContext);
 

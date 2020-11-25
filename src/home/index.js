@@ -4,17 +4,13 @@ import { useFocusEffect } from '@react-navigation/native';
 import {
     SafeAreaView,
     StyleSheet,
-    ScrollView,
     View,
     Text,
-    StatusBar,
     FlatList,
     TouchableOpacity
   } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { SearchBar } from 'react-native-elements';
-import { color } from 'react-native-reanimated';
-import NewsDetail from '../news_detail';
 
 const Home = ({ navigation }) => {
     const { 
@@ -26,9 +22,6 @@ const Home = ({ navigation }) => {
     } = useContext(NewsContext);
     const [selectedId, setSelectedId] = useState(null);
     const [searchNewsValue, setSearchNewsValue] = useState(null);
-    /* useEffect(() => {
-       console.log('news', news);
-    }, []); */
 
     useFocusEffect(
         useCallback(() => {
@@ -59,12 +52,9 @@ const Home = ({ navigation }) => {
 
 
     const renderItem = ({ item }) => {
-        //const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
         return (
             <Item
                 item={item}
-                onPress={() => setSelectedId(item.id)}
-                //style={{ backgroundColor }}
             />
         );
     };
