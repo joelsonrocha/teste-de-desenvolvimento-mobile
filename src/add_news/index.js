@@ -28,7 +28,8 @@ const AddNews = ({ route, navigation }) => {
         addNews,
         author,
         uuidv4,
-        gegetNews
+        getNews,
+        editNews
     } = useContext(NewsContext);
 
     useEffect(() => {
@@ -61,13 +62,24 @@ const AddNews = ({ route, navigation }) => {
 
     const saveNews = ()=>{
         if(title && textNews && selectedAuthor){
-          if(addNews({id: uuidv4(), author_id: selectedAuthor, title: title, text: textNews})){
-            setTitle('');
-            setTextNews('');
-            setSelectedAuthor(null);
-            navigation.pop();
-          }else{
-            Alert.alert('Erro', 'Ocorreu algum erro ao salvar');
+          if(op == 'new'){
+            if(addNews({id: uuidv4(), author_id: selectedAuthor, title: title, text: textNews})){
+              setTitle('');
+              setTextNews('');
+              setSelectedAuthor(null);
+              navigation.pop();
+            }else{
+              Alert.alert('Erro', 'Ocorreu algum erro ao salvar');
+            }
+          }else if(op == 'edit'){
+            if(editNews({id: item.id, author_id: selectedAuthor, title: title, text: textNews})){
+              setTitle('');
+              setTextNews('');
+              setSelectedAuthor(null);
+              navigation.pop();
+            }else{
+              Alert.alert('Erro', 'Ocorreu algum erro ao salvar');
+            }
           }
         }else{
           console.log('informe todos os campos');
