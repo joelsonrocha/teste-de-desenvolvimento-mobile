@@ -33,14 +33,16 @@ const App = () => {
   return (
     <NewsProvider>
       <NavigationContainer>
-          {/* <Stack.Navigator initialRouteName="Home">
+          <Stack.Navigator initialRouteName="Home">
             <Stack.Screen name="Home" component={Home} options={{ title: 'News' }}/>
-          </Stack.Navigator> */}
-        <Tab.Navigator>
+            <Stack.Screen name="AddNews" component={AddNews} options={{ title: 'AddNews' }}/>
+            <Stack.Screen name="Author" component={Author} options={{ title: 'Author' }}/>
+          </Stack.Navigator> 
+        {/* <Tab.Navigator>
             <Tab.Screen name="Home" component={Home} />
             <Tab.Screen name="AddNews" component={AddNews} />
             <Tab.Screen name="Author" component={Author} />
-        </Tab.Navigator>
+        </Tab.Navigator> */}
       </NavigationContainer>
     </NewsProvider>
   );

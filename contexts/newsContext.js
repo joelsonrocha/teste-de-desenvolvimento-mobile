@@ -7,25 +7,29 @@ const NewsProvider = ({ children }) => {
     const [storedNumber, setStoredNumber] = useState('');
     const [needsRestart, setNeedsRestart] = useState(false);
     const [news, setNews] = useState([]);
-    const [author, setAuthor] = useState([]);
+    const [author, setAuthor] = useState([
+        {id: 1, name: 'João'},
+        {id: 2, name: 'Maria'},
+        {id: 3, name: 'Anônimo'}
+    ]);
 
     addNews = async(new_news) =>{
-        console.log('addNews', new_news);
         try {
             if(new_news){
-                setNews([...news, new_news]);
-                console.log('addNews new', news);
-                await AsyncStorage.setItem('news', JSON.stringify(news));
+                await AsyncStorage.setItem('news', JSON.stringify([...news, new_news]));
+                getNews();
+                return true;
             }
         } catch (e) {
             // saving error
-            console.log('addNews', e);
+            console.log('Erro addNews', e);
+            return false;
         }
     }
 
     getNews = async() =>{
         try {
-            const value = await AsyncStorage.getItem('news')
+            const value = await AsyncStorage.getItem('news');
             if(value !== null) {
                 setNews(JSON.parse(value));
             }
@@ -34,27 +38,18 @@ const NewsProvider = ({ children }) => {
         }
     }
 
-    /* useEffect(() => {
-        AsyncStorage.getItem(STORAGE_KEY).then((value) => {
-          if (value) {
-            setStoredNumber(value);
-          }
+    const getAuthorsName = (id) =>{
+        return author.filter((item) => {
+            return item.id == id;
         });
-    }, []); */
+    }
 
-    /* const increaseByTen = useCallback(async () => {
-        const newNumber = +storedNumber > 0 ? +storedNumber + 10 : 10;
-
-        await AsyncStorage.setItem(STORAGE_KEY, `${newNumber}`);
-
-        setStoredNumber(`${newNumber}`);
-        setNeedsRestart(true);
-    }, [setNeedsRestart, setStoredNumber, storedNumber]);
-    
-    const clearItem = useCallback(async () => {
-        await AsyncStorage.removeItem(STORAGE_KEY);
-        setNeedsRestart(true);
-    }, [setNeedsRestart]); */
+    const uuidv4 = () => {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+          var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+          return v.toString(16);
+        });
+    }
 
     return (
         <NewsContext.Provider
@@ -62,7 +57,10 @@ const NewsProvider = ({ children }) => {
             teste,
             addNews,
             getNews,
-            news
+            news,
+            author,
+            uuidv4,
+            getAuthorsName
           }}
         >
           {children}
